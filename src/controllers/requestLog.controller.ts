@@ -1114,7 +1114,54 @@ const userLast5Min = asyncHandler(async (req: Request, res: Response) => {
 })
 
 
+const getAll = asyncHandler(async (req: Request, res: Response) => {
+    const user_id = req.user_id;
+    const statusCode = req.params.statusCode
 
 
 
-export { routeSpecificData, statusCodes, userLast5Min, userActivityData, deviceDetails, userApiEndpoints, userDetailsByDays, last5Min, ApiEndPointsUtilization, EndPointsResponseTime, getRequestLogByrequestId, allData, apiUsageChart, getRequestLogByUserId, getAllRequestsThisMonthByClientId, last24Hours, DataByDays }
+    if (statusCode == "all") {
+        const result = await PrismaClient.requestLog.findMany({
+            where: {
+                Request: {
+                    ownerId: user_id
+                }
+            },
+            orderBy: {
+                createdAt: 'desc' // or 'asc' for ascending
+            }
+        });
+        const response = new ApiResponse("200", result, "Requests Found");
+
+        res.status(200).json(response);
+        return
+    }
+    if (!user_id) throw new ApiError(400, "Invalid Request");
+
+    if (statusCode !== "200" && statusCode !== "400" && statusCode !== "500") throw new ApiError(400, "Invalid Request");
+
+    const code = Number(statusCode)
+
+    const result = await PrismaClient.requestLog.findMany({
+        where: {
+            Request: {
+                ownerId: user_id
+            },
+            statusCode: code
+        },
+        orderBy: {
+            createdAt: 'desc' // or 'asc' for ascending
+        }
+    });
+
+
+    const response = new ApiResponse("200", result, "Requests Found");
+
+    res.status(200).json(response);
+});
+
+
+
+
+
+export { routeSpecificData, getAll, statusCodes, userLast5Min, userActivityData, deviceDetails, userApiEndpoints, userDetailsByDays, last5Min, ApiEndPointsUtilization, EndPointsResponseTime, getRequestLogByrequestId, allData, apiUsageChart, getRequestLogByUserId, getAllRequestsThisMonthByClientId, last24Hours, DataByDays }

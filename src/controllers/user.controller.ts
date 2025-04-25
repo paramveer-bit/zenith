@@ -374,5 +374,66 @@ const getApiKey = asyncHandler(async (req: Request, res: Response) => {
 
 })
 
+const getLogRettntion = asyncHandler(async (req: Request, res: Response) => {
+    const user_id = req.user_id
+    if (!user_id) {
+        throw new ApiError(400, "Invalid user")
+    }
 
-export { signup, signIn, getApiKey, verifyUser, resendOtp, signOut, isSignedIn, resetPasswordWhileLoggin }
+    const user = await PrismaClient.user.findFirst({
+        where: {
+            id: user_id
+        },
+        select: {
+            logRetention: true,
+        }
+    })
+
+    if (!user) {
+        const responde = new ApiResponse("200", { logRetentionDays: 30 }, "Successfully fecthed")
+    }
+
+    const response = new ApiResponse("200", { logRetentionDays: user?.logRetention }, "User is signed in")
+
+    res.status(200).json(response)
+
+})
+
+const updateLogRetention = asyncHandler(async (req: Request, res: Response) => {
+
+    const user_id = req.user_id
+    if (!user_id) {
+        throw new ApiError(400, "Invalid user")
+    }
+
+    const { logRetentionDays } = req.body
+
+    // check if logRetentionDays is valid
+    if (!logRetentionDays || !z.number().min(1).max(365).safeParse(logRetentionDays).success) {
+        throw new ApiError(400, "Invalid logRetentionDays")
+    }
+
+    // update user with logRetentionDays
+    const updatedUser = await PrismaClient.user.update({
+        where: {
+            id: user_id
+        },
+        data: {
+            logRetention: logRetentionDays
+        }
+    })
+
+    // check if user is updated
+    if (!updatedUser) {
+        throw new ApiError(500, "Error in updating user")
+    }
+
+    // send response
+    const response = new ApiResponse("200", null, "Log retention updated successfully")
+
+    res.status(200).json(response)
+
+})
+
+
+export { signup, updateLogRetention, getLogRettntion, signIn, getApiKey, verifyUser, resendOtp, signOut, isSignedIn, resetPasswordWhileLoggin }

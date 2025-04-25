@@ -14,16 +14,17 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(cuid())
-  email       String    @unique
-  name        String?
-  password    String
-  otp         String?
-  otpExpiry   DateTime?
-  verified    Boolean   @default(false)
-  resendCount Int       @default(0)
-  lastResend  DateTime?
-  secret      String?   @default(uuid())
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  password     String
+  otp          String?
+  otpExpiry    DateTime?
+  verified     Boolean   @default(false)
+  resendCount  Int       @default(0)
+  lastResend   DateTime?
+  secret       String?   @default(uuid())
+  logRetention Int?      @default(30)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
