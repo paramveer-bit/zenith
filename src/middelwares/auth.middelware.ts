@@ -31,6 +31,8 @@ const verifyJwt = asyncHandler(async (req: Request, res: Response, next: NextFun
         if (!user) {
             throw new ApiError(401, "Unauthorized Access. Login First")
         }
+        // console.log("Inside Mideel ware---------------------");
+        // console.log(user)
 
         req.user_id = user_id
         next()

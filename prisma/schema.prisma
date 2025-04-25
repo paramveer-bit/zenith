@@ -57,6 +57,7 @@ model RateLimiting {
   rate      Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  ip        String?
 
   Request Request @relation(fields: [requestId], references: [id])
 
