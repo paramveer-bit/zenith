@@ -25,11 +25,16 @@ const temp = asyncHandler(async (req: Request, res: Response, next: NextFunction
         device: result.device.type
     }
     var requestedUrl = req.path
-    const { user_code, secret } = req.headers
+    const secret = req.headers['secret']
+    let user_code = req.headers['user-code']
+    console.log(secret, user_code);
 
     let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     if (ip == undefined) {
         ip = "NIL"
+    }
+    if (!user_code) {
+        user_code = ip
     }
     console.log(requestedUrl)
     console.log(req.url)

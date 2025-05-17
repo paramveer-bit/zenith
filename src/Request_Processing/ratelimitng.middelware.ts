@@ -13,9 +13,11 @@ const temp = asyncHandler(async (req: Request, res: Response, next: NextFunction
     if (request.rateLimit === false) {
         return next()
     }
-    const user_code = req.user_code
+    let user_code = req.user_code
     let limit = request.default
-
+    if (!user_code) {
+        user_code = req.ip
+    }
     // check if user has custom rate limit
     const per_user = await PrismaClient.rateLimiting.findFirst({
         where: {
@@ -25,6 +27,8 @@ const temp = asyncHandler(async (req: Request, res: Response, next: NextFunction
             }
         }
     })
+
+    console.log(per_user)
     if (per_user != null && per_user.rate != null) {
         limit = per_user.rate
     }
