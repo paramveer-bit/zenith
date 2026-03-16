@@ -2,8 +2,7 @@ import asyncHandler from "../helpers/asynchandeler";
 import ApiError from "../helpers/ApiError";
 import { Request, Response, NextFunction } from "express";
 import PrismaClient from "../prismaClient/index"
-import RedisClient from "../Redis/redis.client"
-
+import RateLimiter from "../RateLimiter/rateLimitingFunction"
 
 
 
@@ -42,19 +41,9 @@ const temp = asyncHandler(async (req: Request, res: Response, next: NextFunction
     }
     // Increment the key pair if ratelimit excceded return error
     try {
-        const replies: any = await new Promise((resolve, reject) => {
-            RedisClient.multi()
-                .incr(key)
-                .expire(key, 60)
-                .exec((err, replies) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve(replies);
-                });
-        });
+        const replies = await RateLimiter(user_code.toString(), limit);
 
-        if (!replies || replies[0] > limit) {
+        if (!replies) {
             await PrismaClient.requestLog.create({
                 data: {
                     requestId: request.id,

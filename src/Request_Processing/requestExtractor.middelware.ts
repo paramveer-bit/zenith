@@ -62,6 +62,8 @@ const temp = asyncHandler(async (req: Request, res: Response, next: NextFunction
         }
     })
     const request = ReuestExtractor(requestedUrl, requests)
+    // console.log(request)
+    // console.log(requests)
     if (!request) {
         await PrismaClient.requestLog.create({
             data: {

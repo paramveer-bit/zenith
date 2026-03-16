@@ -66,14 +66,49 @@ app.use("/api/v1/rateLimiting", rateLimitingRouter)
 // const requestIds = [
 //     "cm806h6cp0002umforap3xz96",
 //     "cm806h9280004umfotb6nun9a",
-//     "cm80d4cni0001um2873k5xsia"
+//     "cm80d4cni0001um2873k5xsia",
+//     "cme0g6nmj0001p3cjvkcg0j94",
+//     "cme0g76nt0003p3cjh1jwkeb1",
+//     "cme0g7ovw0005p3cjsqjqqtq1",
+//     "cmekdn6d40019p3h4ob1rcqni",
+//     "cmeke7t7v001gp3h4wkmng3n9",
+//     "cmeke9tnn001mp3h4y4mcpey5",
+//     "cmekecwc6001qp3h4eqbt6u9i"
 // ];
+// const requestedUrls = [
+//     "/api/v1/user/auth/isSignedIn",
+//     "/api/v1/user/auth/signIn",
+//     "/api/v1/user/auth/signup",
+//     "/api/v1/user/auth/verifyUser",
+//     "/api/v1/user/auth/resendOtp",
+//     "/api/v1/user/auth/signout",
+//     "/api/v1/user/profile",
+//     "/api/v1/gym/[gymId]",
+//     "/api/v1/gym/[gymId]/images",
+//     "/api/v1/gym/[gymId]/addImage"
+// ]
+// const forwardedUrls = [
+//     "https://back.fitnearby.com/api/v1/user/auth/isSignedIn",
+//     "https://back.fitnearby.com/api/v1/user/auth/signIn",
+//     "https://back.fitnearby.com/api/v1/user/auth/signup",
+//     "https://back.fitnearby.com/api/v1/user/auth/verifyUser",
+//     "https://back.fitnearby.com/api/v1/user/auth/resendOtp",
+//     "https://back.fitnearby.com/api/v1/user/auth/signout",
+
+//     "https://back.fitnearby.com/api/v1/user/profile",
+//     "https://back.fitnearby.com/api/v1/gym/[gymId]",
+//     "https://back.fitnearby.com/api/v1/gym/[gymId]/images",
+//     "https://back.fitnearby.com/api/v1/gym/[gymId]/addImage"
+// ]
 
 // const add = async (data: any) => {
 //     for (let i = 0; i < Math.floor(Math.random() * 10); i++) {
 //         try {
-//             data.userId = `user-${354}`;
-//             data.requestId = requestIds[Math.floor(Math.random() * requestIds.length)];
+//             data.userId = `user-${354 * i}`;
+//             const idx = Math.floor(Math.random() * requestIds.length);
+//             data.requestId = requestIds[idx];
+//             data.requestUrl = requestedUrls[idx];
+//             data.forwardUrl = forwardedUrls[idx];
 //             data = JSON.parse(JSON.stringify(data));
 //             console.log(data);
 
