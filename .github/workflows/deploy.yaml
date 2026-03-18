@@ -38,6 +38,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             # 1. Navigate to your app directory (change this to your actual path)
+            mkdir -p ~/my-app-folder
             cd ~/my-app-folder
 
             # 2. Create/Overwrite the .env file with current secrets
@@ -48,7 +49,7 @@ jobs:
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
             echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env
 
-
+            sudo docker compose pull
             # 4. Restart the services
             # --remove-orphans cleans up old containers
-            sudo docker-compose up -d --remove-orphans
+            sudo docker compose up -d --remove-orphans
