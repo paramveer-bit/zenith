@@ -12,7 +12,7 @@ services:
       - app-network
     environment:
       # These variables must match what you export in the script
-      URL: ${DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
       PORT: ${PORT}
       EMAIL: ${EMAIL}
       PASSWORD: ${PASSWORD}
