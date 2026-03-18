@@ -1,1 +1,5 @@
 # zenith
+
+In github add
+DOCKER_USERNAME
+DOCKER_PASSWORD

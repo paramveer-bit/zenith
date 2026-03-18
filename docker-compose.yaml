@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    image: "paramveer01/zenith:latest"
+    container_name: zenith
+    ports:
+      - "4000:4000"
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    environment:
+      # These variables must match what you export in the script
+      URL: ${DATABASE_URL}
+      PORT: ${PORT}
+      EMAIL: ${EMAIL}
+      PASSWORD: ${PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      REDIS_URL: ${REDIS_URL}
+
+  redis:
+    image: redis:latest
+    container_name: redis-zenith  # Changed from ':' to '-'
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    volumes:
+      - redis-data:/data
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
