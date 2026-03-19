@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
     const result = parser.getResult();
     console.log(parser);
     console.log(result);
-    res.status(200).send("Hello, Server is running")
+    res.status(200).send("Hello Param , Server is running")
 }
 )
 
